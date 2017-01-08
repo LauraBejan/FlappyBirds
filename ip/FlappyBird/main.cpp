@@ -2,7 +2,9 @@
 #include<math.h>
 #include<stdlib.h>
 #include<time.h>
+#include<conio.h>
 using namespace std;
+void startJoc();
 void menu()
 {
     cout<<" ______ _               _____  _______     __  ____ _____ _____  _____"<<endl<<
@@ -26,9 +28,116 @@ void menu()
         <<"| |  | || |____ | |\\  || |__| |"<<endl<<"                           "
         <<"|_|  |_||______||_| \\_| \\____/ "<<endl;
     cout<<endl<<endl<<endl;
-    cout << "To start the game, press any key"<<endl;
+    cout << "To start the game, press S"<<endl;
     cout<<"To see the highscores, press P"<<endl;
     cout<<"For help, press H"<<endl;
+    cout<<"To go back to the menu, press M"<<endl;
+
+}
+void highscores()
+{
+    cout<<"tabel";
+}
+
+void help()
+{
+    cout<<endl<<endl<<endl<<endl<<endl<<endl<<endl<<endl<<endl;
+    cout<<"                      ";
+    int timp=clock();
+
+    cout<<"Press S to jump and Q to quit"<<endl;
+    cout<<"                         "<<"To start, press any key";
+    while(!kbhit());
+    system("cls");
+    //startJoc();
+
+}
+void gameOver(int score)
+{
+    cout<<endl<<endl<<endl<<endl<<endl<<endl<<endl<<endl<<"                       ";
+    cout<<"Your score is: "<< score<<endl;
+    cout<<"                       "<<"To go back to main menu, press M"<<endl;
+    cout<<"                       "<<"To play again, press S"<<endl;
+    cout<<"                       "<<"To see the highscores, press P"<<endl;
+}
+void startJoc()
+{cout<<"joc";
+    int score=0;
+    // design
+    int a=158;
+    char a1=char(a);
+	string jucatorImag(1,a1);
+	a=178;
+	a1=char(a);
+    string inamicImag(3,a1);// = "!!!";
+    int inaltimeMax=20, latimeMax=60;
+    int jucatorPozInaltime=inaltimeMax/2, jucatorPozLatime;
+
+
+    //timp
+    float timpStart, timpStop;
+
+    //fizica
+    float velInaltime=0, vitezaInaltime=4.0f, vitezaMax=2.0f, gravitate=0.4f;
+
+    //inamic
+    int inamicInaltimeMin=3, distantaSusJos=4;
+    int inamicInaltimeMax=inaltimeMax-distantaSusJos-inamicInaltimeMin;
+    int nrInamiciSerie=5, lungimeInamc=inamicImag.length();
+    float *inaltimeInamic=new float[nrInamiciSerie];
+    //logica
+    bool verificaApasareTasta=kbhit(),aInceput=false;
+    char tastaApasata=getch();
+
+    //traseu
+    double *scrollIndex = new double[nrInamiciSerie];
+	double scrollSpeed = 1;
+	int eroareIndex = 0;
+
+    //joc
+
+    while(tastaApasata!='q')
+    {
+        if(aInceput==false)
+        {
+            timpStart=clock();
+            timpStop=clock();
+            aInceput=true;  //cout<<timpStart<<" "<<timpActual<<endl;
+            for(int i=0;i<nrInamiciSerie;i++)
+                {
+                    inaltimeInamic[i]=(float)(rand()%10/5);
+                    scrollIndex[i]=inaltimeMax;
+                }
+        }
+        tastaApasata=getch();
+
+        if(tastaApasata=='q')
+            {
+                system("cls");  //clear screen
+                gameOver(score);
+                break;
+            }
+        if(tastaApasata=='w')
+            velInaltime-=vitezaInaltime;
+
+        velInaltime+=gravitate;
+
+        if(velInaltime>vitezaMax)
+            velInaltime=vitezaMax;
+        else
+            if(velInaltime<-vitezaMax*0.666)
+                velInaltime=-vitezaMax*0.666;
+
+        jucatorPozInaltime+=velInaltime;
+
+        if(jucatorPozInaltime<0)
+            jucatorPozInaltime=0;
+        else
+            if(jucatorPozInaltime>inaltimeMax-1)
+                jucatorPozInaltime=inaltimeMax-1;
+    }
+    system("cls");  //clear screen
+    gameOver(score);
 
 }
 int main()
@@ -55,49 +164,26 @@ int main()
 
     }*/
     //joc
-    char tastaApasata=' ';
-    bool verifica=0;
-    int inaltimeMax=20, lungimeMax=60;
-    int a=158;
-	char a1=char(a);
-	string jucator(1,a1);
-	a=178;
-	a1=char(a);
-    string inamic(3,a1);
-	string spatiu=" ";
 
-	//jucator
-	float velY = 0;
-	float vitezaY = 4.0f;
-	float max_viteza = 2.0f;//afecteaza saritura
-	float gravitate = 0.4f;//afecteaza saritura
-	int jucatorY = (inaltimeMax - 1) /2;
-
-	//inamic
-	int distantaInamic=10; //distanta obstacole
-	int lungimeInamic=lungimeMax/(distantaInamic+inamic.length()-1);
-	int *inamicY = new int[lungimeInamic]; //Top of opening of size: openingSize
-	int distantaCaleTrecere= 4; // distanta cale trecere
-	int inamicSus= 3; //inamic sus
-	int inamicJos=inaltimeMax-inamicSus-distantaCaleTrecere; //inamic jos
-
-    //traseu
-	double *traseuContor = new double[lungimeInamic];
-	double traseuViteza = 0.7;
-	int offsetIndex = 0; // face sa apara un singur obstacol intreg
-
-	//timp
-	double refreshTimp = 0.0, refreshDurata = 0.35;
-	bool apasat = false;
-	long timp, timpAnterior;
-	timpAnterior = clock();
-	timp= clock();
-	double timpStart;
-	bool start=0;
-	double fps = 18.0;
-	double convDT = 0.0;
-	double timpTotal = 0.0;
 	menu();
+	char tastaApasata=getch();
+	do{
+
+        switch(tastaApasata)
+        {
+            case 's':   system("cls");  //clear screen
+                        help();
+                        startJoc();
+                        break;
+            case 'p':   system("cls");  //clear screen
+                        highscores();
+                        break;
+            case 'm':   system("cls");  //clear screen
+                        menu();
+                        break;
+        }
+        tastaApasata=getch();
+    }   while(tastaApasata!='q');
     return 0;
 
 }
