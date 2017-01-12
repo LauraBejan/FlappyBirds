@@ -12,12 +12,12 @@ void startJoc();
 bool gamePlayed;
 void menu()
 {
-    cout<<" ______ _               _____  _______     __  ____ _____ _____  _____"<<endl<<
-     "|  ____| |        /\\   |  __ \\|  __ \\ \\   / / |  _ \\_   _|  __ \\|  __ \\ "<<endl<<
-     "| |__  | |       /  \\  | |__) | |__) \\ \\_/ \/  | |_) || | | |__) | |  | |"<<endl<<
-     "|  __| | |      / /\\ \\ |  ___/|  ___/ \\   /   |  _ < | | |  _  /| |  | |"<<endl<<
-     "| |    | |____ / ____ \\| |    | |      | |    | |_) || |_| | \\ \\| |__| |"<<endl<<
-     "|_|    |______/_/    \\_\\_|    |_|      |_|    |____/_____|_|  \\_\\_____/ "<<endl<<  endl<<endl;
+    cout<<"     ______ _               _____  _______     __  ____ _____ _____  _____"<<endl<<
+     "    |  ____| |        /\\   |  __ \\|  __ \\ \\   / / |  _ \\_   _|  __ \\|  __ \\ "<<endl<<
+     "    | |__  | |       /  \\  | |__) | |__) \\ \\_/ \/  | |_) || | | |__) | |  | |"<<endl<<
+     "    |  __| | |      / /\\ \\ |  ___/|  ___/ \\   /   |  _ < | | |  _  /| |  | |"<<endl<<
+     "    | |    | |____ / ____ \\| |    | |      | |    | |_) || |_| | \\ \\| |__| |"<<endl<<
+     "    |_|    |______/_/    \\_\\_|    |_|      |_|    |____/_____|_|  \\_\\_____/ "<<endl<<  endl<<endl;
 
 
 
@@ -33,10 +33,9 @@ void menu()
         <<"| |  | || |____ | |\\  || |__| |"<<endl<<"                           "
         <<"|_|  |_||______||_| \\_| \\____/ "<<endl;
     cout<<endl<<endl<<endl;
-    cout << "To start the game, press S"<<endl;
-    cout<<"To see the highscores, press P"<<endl;
-    cout<<"For help, press H"<<endl;
-    cout<<"To go back to the menu, press M"<<endl;
+    cout<<"  To start the game, press S"<<endl;
+    cout<<"  To see the highscores, press P"<<endl;
+    cout<<"  To go back to the menu, press M"<<endl;
 
 }
 void highscores()
@@ -46,7 +45,7 @@ void highscores()
            "  | |      ___   __ _   __| |  ___  _ __ | |__    ___    __ _  _ __  __| | "<<endl<<
            "  | |     / _ \\ / _` | / _` | / _ \\| '__|| '_ \\  / _ \\  / _` || '__|/ _` | "<<endl<<
            "  | |____|  __/| (_| || (_| ||  __/| |   | |_) || (_) || (_| || |  | (_| | "<<endl<<
-           "  |______|\\___| \\__,_| \\__,_| \\___||_|   |____/  \\___/  \\__,_||_|   \\__,_| ";
+           "  |______|\\___| \\__,_| \\__,_| \\___||_|   |____/  \\___/  \\__,_||_|   \\__,_| "<<endl<<endl;
 
 
     int contor=0;
@@ -69,9 +68,9 @@ void help()
     int timp=clock();
 
     cout<<"Press S to jump and Q to quit"<<endl;
-    cout<<"                         "<<"To start, press any key";
-    while(!kbhit());
-    system("cls");
+    cout<<"                      "<<"To start, double press any key";
+  //  while(!kbhit());
+   // system("cls");
     //startJoc();
 
 }
@@ -85,7 +84,7 @@ void gameOver(int score,float timp)
     cout<<"                       "<<"To see the highscores, press P"<<endl;
 }
 void startJoc()
-{
+{//<<endl<<
     int score=0;
     // design
     int a=158;
@@ -95,13 +94,16 @@ void startJoc()
 	a1=char(a);
     string inamicImag(3,a1);// = "!!!";
     int inaltimeMax=20, latimeMax=60;
-
+    a=3;
+    a1=char(a);
+    string viataImag(3,a1);
 
     //timp
     float timpStart, timpStop, timpAfisare;
     float updateLogic=0;
     int fps=12;
     float timp=clock(), timpAnterior=clock();
+    float timpLovitInamic=0, timpLovitInamicStart;
 
     //fizica
     float velInaltime=0, vitezaInaltime=4.0f, vitezaMax=2.0f, gravitate=0.4f;
@@ -127,6 +129,8 @@ void startJoc()
     int jucatorPozInaltime=(inaltimeMax-1)/2;
     int jucatorPozLatime;
 
+    //vieti
+    int life=0,nrInima;
     //joc
     bool aApasat=kbhit();
     tastaApasata=' ';
@@ -148,18 +152,19 @@ void startJoc()
                 g<<inaltimeInamic[i]<<"h";
             g<<endl;
         }
+        if(life==9)
+            break;
        // tastaApasata=getch();
         float deltaTime=timpAnterior-timp;
         timp=clock();
         updateLogic+=deltaTime/(1000/fps);
-
         if(updateLogic>=1)
         {
             updateLogic--;
             string output="";
             system("cls");
             timpAfisare=clock()/1000-timpStart;
-            cout<<"Time:"<<timpAfisare<<" Score:"<<score/3<<endl;
+            cout<<"Time:"<<timpAfisare<<" Score:"<<score/3<<" Life:"<< viataImag<<endl;
             if(tastaApasata=='q')// && !aApasat)
             {
                 system("cls");  //clear screen
@@ -209,7 +214,11 @@ void startJoc()
             for(int i=0;i<nrInamiciSerie;i++)
                 if(scrollIndex[i]<=latimeMax/4 && scrollIndex[i]>latimeMax/4-inamicImag.length())
                     if(jucatorPozInaltime<inaltimeInamic[i] || jucatorPozInaltime>=inaltimeInamic[i]+ distantaSusJos)
-                        score=score+1-1;//cout<<"hit";
+                        {
+                            life++;//cout<<"hit";
+                            nrInima=life/3;
+                            viataImag[viataImag.length()-nrInima]=NULL;
+                        }
                     else score++;
 
             //grafica
@@ -254,6 +263,7 @@ void startJoc()
 
                 else
                     tastaApasata= ' ';
+
         }
         timpAnterior=clock();
 
