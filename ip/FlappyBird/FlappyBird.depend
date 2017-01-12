@@ -5,7 +5,7 @@
 	<stdlib.h>
 	<time.h>
 
-1484004713 source:c:\users\laura\desktop\ip\flappybird\main.cpp
+1484181671 source:c:\users\laura\desktop\ip\flappybird\main.cpp
 	<iostream>
 	<math.h>
 	<stdlib.h>
@@ -13,4 +13,7 @@
 	<conio.h>
 	<iomanip>
 	<fstream>
+	"leaderboard.h"
+
+1484180576 c:\users\laura\desktop\ip\flappybird\leaderboard.h
 

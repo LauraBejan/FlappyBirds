@@ -5,13 +5,11 @@
 #include<conio.h>
 #include<iomanip>
 #include<fstream>
+#include"leaderboard.h"
 using namespace std;
 ofstream g("nrr.out");
 void startJoc();
-struct lista{
-            int info, timp;
-            lista*urm;
-            }*prim,*ultim;
+bool gamePlayed;
 void menu()
 {
     cout<<" ______ _               _____  _______     __  ____ _____ _____  _____"<<endl<<
@@ -43,101 +41,27 @@ void menu()
 }
 void highscores()
 {
+    cout<< "   _                       _              _                             _"<<endl<<
+           "  | |                     | |            | |                           | | "<<endl<<
+           "  | |      ___   __ _   __| |  ___  _ __ | |__    ___    __ _  _ __  __| | "<<endl<<
+           "  | |     / _ \\ / _` | / _` | / _ \\| '__|| '_ \\  / _ \\  / _` || '__|/ _` | "<<endl<<
+           "  | |____|  __/| (_| || (_| ||  __/| |   | |_) || (_) || (_| || |  | (_| | "<<endl<<
+           "  |______|\\___| \\__,_| \\__,_| \\___||_|   |____/  \\___/  \\__,_||_|   \\__,_| ";
+
+
     int contor=0;
     lista *p=prim;
-    cout<<"                            "<<++contor<<". Scor:"<<p->info<<" Timp:"<<p->timp<<endl;
-    while(p->urm!=NULL)
+    if(gamePlayed)
+    {
+        cout<<"                            "<<++contor<<". Scor:"<<p->info<<" Timp:"<<p->timp<<endl;
+        while(p->urm!=NULL)
         {
             p=p->urm;
             cout<<"                            "<<++contor<<". Scor:"<<p->info<<" Timp:"<<p->timp<<endl;
         }
-
-}
-void unElement(int score, float time)
-{
-
-        lista *p=new lista;
-        p->urm=NULL;
-        p->info=score;
-        p->timp=time;
-        if(prim->info>score)
-        {g<<"OK";
-            ultim=p;
-            prim->urm=ultim;
-        }
-        else if(prim->info<score)
-            {
-                 p->urm=prim;
-                 ultim=prim;
-                 prim=p;
-            }
-            else    if(prim->timp>time)
-                    {
-                        p->urm=prim;
-                        ultim=prim;
-                        prim=p;
-                    }
-                    else   {
-                            ultim->urm=p;
-                            ultim=ultim->urm;
-                            }
-        return;
-
-
-}
-void generateHighscoresList(int score, float time)
-{
-    if(prim==NULL)
-    {
-        prim=new lista;
-        prim->info=score;
-        prim->timp=time;
-        prim->urm=NULL;
-        ultim=prim;
-        return;
     }
-    if(prim->urm==NULL)
-        {
-            unElement(score,time);
-            return;
-        }
-    lista *p=prim;
-    int ok=0;
-    if(p->info<score)
-        {
-            unElement(score,time);
-            return;
-        }
-
-    while(p->urm->info>score && p->urm!=NULL)
-            p=p->urm;
-    int auxScore=p->urm->info;
-    if(p->urm->info==auxScore && p->urm->timp>time && p==prim)
-    {
-        unElement(score,time);
-        return;
-    }
-    while(p->urm->info==auxScore && p->urm!=NULL)
-        if(p->urm->timp>time)
-    {
-        lista *aux=new lista;
-        aux->urm=p->urm;
-        aux->info=score;
-        aux->timp=time;
-        p->urm=aux;
-        return;
-    }
-        else p=p->urm;
-
-    lista *aux=new lista;
-    aux->urm=p->urm;
-    aux->info=score;
-    aux->timp=time;
-    p->urm=aux;
-    //lista *p=prim;
-    //highscores();
-
 }
+
 void help()
 {
     cout<<endl<<endl<<endl<<endl<<endl<<endl<<endl<<endl<<endl;
@@ -153,7 +77,7 @@ void help()
 }
 void gameOver(int score,float timp)
 {
-    generateHighscoresList(score,timp);
+    listaInsertie(score,timp);
     cout<<endl<<endl<<endl<<endl<<endl<<endl<<endl<<endl<<"                       ";
     cout<<"Your score is: "<< score<<endl;
     cout<<"                       "<<"To go back to main menu, press M"<<endl;
@@ -211,6 +135,7 @@ void startJoc()
     {
         if(aInceput==false)
         {
+            gamePlayed=1;
             timpStart=clock()/1000;
             //timpStop=clock();
             aInceput=true;  //cout<<timpStart<<" "<<timpActual<<endl;
