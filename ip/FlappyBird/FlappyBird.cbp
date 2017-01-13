@@ -33,6 +33,7 @@
 			<Add option="-fexceptions" />
 		</Compiler>
 		<Unit filename="leaderboard.h" />
+		<Unit filename="librarii.h" />
 		<Unit filename="main.cpp" />
 		<Extensions>
 			<code_completion />

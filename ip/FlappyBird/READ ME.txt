@@ -1,0 +1,10 @@
+Instructiuni joc
+___________________________
+Jucatorul are 3 vieti.
+La fiecare 3, 6, 12... secunde in care nu a fost atins niciun inamic,
+punctajul obtinut se va mari X2, X3, X4...
+Pentru a sari se va folosi S, iar pentru a iesi din joc inainte de GameOver 
+se va folosi tasta Q.
+___________________________
+
+Jocul a fost realizat in CodeBlocks folosind C++.

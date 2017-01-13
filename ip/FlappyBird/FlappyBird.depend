@@ -5,15 +5,17 @@
 	<stdlib.h>
 	<time.h>
 
-1484333172 source:c:\users\laura\desktop\ip\flappybird\main.cpp
-	<iostream>
-	<math.h>
+1484338967 source:c:\users\laura\desktop\ip\flappybird\main.cpp
+	"librarii.h"
+	"leaderboard.h"
+
+1484180576 c:\users\laura\desktop\ip\flappybird\leaderboard.h
+
+1484337811 c:\users\laura\desktop\ip\flappybird\librarii.h
 	<stdlib.h>
 	<time.h>
 	<conio.h>
 	<iomanip>
-	<fstream>
-	"leaderboard.h"
-
-1484180576 c:\users\laura\desktop\ip\flappybird\leaderboard.h
+	<iostream>
+	<math.h>
 
