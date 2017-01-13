@@ -68,24 +68,45 @@ void help()
     int timp=clock();
 
     cout<<"Press S to jump and Q to quit"<<endl;
-    cout<<"                      "<<"To start, double press any key";
-  //  while(!kbhit());
-   // system("cls");
-    //startJoc();
+    cout<<"                      "<<"Be careful to not hit the walls as you only"<<endl<<"                      "<< "have 3 lives"<<endl;
+    cout<<"                      "<<"Your score will get a bonus every 3, 6, 9... seconds"<<endl<<"                      "<<"spent hitting no walls"<<endl;
+    cout<<endl<<"                      "<<"To start, double press any key";
+
 
 }
 void gameOver(int score,float timp)
 {
     listaInsertie(score,timp);
-    cout<<endl<<endl<<endl<<endl<<endl<<endl<<endl<<endl<<"                       ";
+     cout<<endl<<endl;
+    cout<<"       _____           __  __ ______    ______      ________ _____"<<endl<<
+            "      / ____|    /\\   |  \\/  |  ____|  / __ \\ \\    / /  ____|  __ \\"<<endl<<
+            "      | |  __   /  \\  | \\  / | |__    | |  | \\ \\  / /| |__  | |__) |"<<endl<<
+            "      | | |_ | / /\\ \\ | |\\/| |  __|   | |  | |\\ \\/ / |  __| |  _  /"<<endl<<
+            "      | |__| |/ ____ \\| |  | | |____  | |__| | \\  /  | |____| | \ \\\\"<<endl<<
+            "       \\_____/_/    \\_\\_|  |_|______|  \\____/   \\/   |______|_|   \\_\\"<<endl;
+    cout<<endl<<endl<<endl<<endl<<endl<<endl<<"                       ";
     cout<<"Your score is: "<< score<<endl;
     cout<<"                       "<<"To go back to main menu, press M"<<endl;
     cout<<"                       "<<"To play again, press S"<<endl;
     cout<<"                       "<<"To see the highscores, press P"<<endl;
 }
+int verificaBonus(float timpBonus)
+{
+    int interval=0,contor=0,aditie=3;
+    if(timpBonus==0)
+        return 1;
+    while(interval<timpBonus)
+        {
+            interval+=aditie;
+            aditie*=2;
+            contor++;
+        }
+    return contor;
+
+}
 void startJoc()
-{//<<endl<<
-    int score=0;
+{
+     int score=0;
     // design
     int a=158;
     char a1=char(a);
@@ -97,7 +118,9 @@ void startJoc()
     a=3;
     a1=char(a);
     string viataImag(3,a1);
-
+    //bonus
+    float timpScadereBonus=0, timpBonus=-1;
+    int bonus;
     //timp
     float timpStart, timpStop, timpAfisare;
     float updateLogic=0;
@@ -152,7 +175,7 @@ void startJoc()
                 g<<inaltimeInamic[i]<<"h";
             g<<endl;
         }
-        if(life==9)
+        if(life>6)
             break;
        // tastaApasata=getch();
         float deltaTime=timpAnterior-timp;
@@ -164,7 +187,20 @@ void startJoc()
             string output="";
             system("cls");
             timpAfisare=clock()/1000-timpStart;
-            cout<<"Time:"<<timpAfisare<<" Score:"<<score/3<<" Life:"<< viataImag<<endl;
+            if(timpAfisare>=6)
+                {
+                    if(timpBonus==-1)
+                        timpScadereBonus=timpAfisare;
+                    timpBonus=clock()/1000-timpScadereBonus-timpStart;
+                }
+            bonus=verificaBonus(timpBonus);
+            if(timpBonus==-1)
+                cout<<"Time:"<<timpAfisare<<" Score:"<<score/3<<" Life:"<< viataImag<< " No hit in 0 seconds"<<endl;
+            else
+                    if(bonus==1)
+                        cout<<"Time:"<<timpAfisare<<" Score:"<<score/3<<" Life:"<< viataImag<< " No hit in "<<timpBonus<<" seconds"<<endl;
+                    else
+                         cout<<"Time:"<<timpAfisare<<" Score:"<<score/3<<" X"<<bonus<<" Life:"<< viataImag<< " No hit in "<<timpBonus<<" seconds"<<endl;
             if(tastaApasata=='q')// && !aApasat)
             {
                 system("cls");  //clear screen
@@ -215,11 +251,13 @@ void startJoc()
                 if(scrollIndex[i]<=latimeMax/4 && scrollIndex[i]>latimeMax/4-inamicImag.length())
                     if(jucatorPozInaltime<inaltimeInamic[i] || jucatorPozInaltime>=inaltimeInamic[i]+ distantaSusJos)
                         {
-                            life++;//cout<<"hit";
+                            timpBonus=-1;
+                            life++;
                             nrInima=life/3;
                             viataImag[viataImag.length()-nrInima]=NULL;
                         }
-                    else score++;
+                    else
+                        score+=bonus;
 
             //grafica
             int k=0;
@@ -236,15 +274,12 @@ void startJoc()
                                     output+=inamicImag;
                                     j+=inamicImag.length()-1;
                                     k=nrInamiciSerie;
-                                   // k++;
-                                    //if(k==nrInamiciSerie)
-                                      //  k=0;
                                     ok=false;
                                 }
+
                                 else
-                                    //{
                                         ok=true;
-                                   // output+=drum;}
+
                             else ok=true;
                         if(ok)
                             output+=drum;
@@ -260,16 +295,16 @@ void startJoc()
                 //aApasat=kbhit();
                 if (kbhit())
                     tastaApasata = getch();
-
                 else
                     tastaApasata= ' ';
 
-        }
-        timpAnterior=clock();
+            }
+            timpAnterior=clock();
 
     }
     system("cls");  //clear screen
     gameOver(score/3,timpAfisare);
+
 
 }
 int main()
